@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:pipen_bloc/models/exception_strategy.dart';
 
+typedef ListenerExceptionStrategiesList = List<ListenerExceptionStrategy>;
+
 class ListenerExceptionStrategy<T> extends ExceptionStrategy {
   ListenerExceptionStrategy({required this.strategy});
 

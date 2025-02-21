@@ -12,6 +12,7 @@ abstract class BlocListen<T> {
   void handle({required Listen<T> listen}) {
     /// Handle listen action on state change
     _listen = listen;
+    errorStrategies.addAll(strategies);
     this.listen();
 
     /// Handle exceptions manager
@@ -30,7 +31,10 @@ abstract class BlocListen<T> {
   BuildContext get context => _listen.$1;
 
   /// Exception strategies on fail state
-  List<ListenerExceptionStrategy> errorStrategies = [];
+  ListenerExceptionStrategiesList errorStrategies = [];
+
+  /// Exception strategies on fail state
+  static ListenerExceptionStrategiesList strategies = [];
 
   /// [Getter] Handle local exception managers
   Function(FailResult fail)? onExceptions;
@@ -93,11 +97,6 @@ abstract class BlocListen<T> {
 
   /// Handle exception strategies
   void _exceptionStrategies(FailResult fail) {
-    /// Form exception
-    // if (this case CubitFormuxInputError cubitFormuxInputError) {
-    //   strategy<InputErrorsException>(cubitFormuxInputError.cubitForm.inputErrors);
-    // }
-
     /// Handle user exception strategies
     for (var strategy in errorStrategies) {
       final callable = strategy.callable(fail.exception);
