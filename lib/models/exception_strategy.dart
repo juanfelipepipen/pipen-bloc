@@ -5,5 +5,5 @@ abstract class ExceptionStrategy {
   bool callable(dynamic instance, dynamic exception);
 
   /// Prepare exception strategy
-  void handle(BuildContext context, dynamic exception);
+  void handle(BuildContext context, dynamic instance, dynamic exception);
 }

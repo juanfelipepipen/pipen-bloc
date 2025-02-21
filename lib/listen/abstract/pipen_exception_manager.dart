@@ -20,7 +20,7 @@ abstract class PipenExceptionManager {
       ExceptionStrategy strategy = strategies.firstWhere(
         (element) => element.callable(this, fail.exception),
       );
-      strategy.handle(context, fail.exception);
+      strategy.handle(context, this, fail.exception);
     } catch (_) {
       onUnknown.call();
     }

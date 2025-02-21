@@ -101,7 +101,7 @@ abstract class BlocListen<T> {
     for (var strategy in errorStrategies) {
       final callable = strategy.callable(this, fail.exception);
       if (callable) {
-        strategy.handle(context, fail.exception);
+        strategy.handle(context, this, fail.exception);
       }
     }
   }
