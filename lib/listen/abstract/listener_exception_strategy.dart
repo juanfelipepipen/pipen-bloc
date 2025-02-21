@@ -9,7 +9,7 @@ class ListenerExceptionStrategy<T> extends ExceptionStrategy {
   Function(T) strategy;
 
   @override
-  bool callable(exception) => exception is T;
+  bool callable(instance, exception) => exception is T;
 
   @override
   void handle(BuildContext context, exception) {

@@ -99,7 +99,7 @@ abstract class BlocListen<T> {
   void _exceptionStrategies(FailResult fail) {
     /// Handle user exception strategies
     for (var strategy in errorStrategies) {
-      final callable = strategy.callable(fail.exception);
+      final callable = strategy.callable(this, fail.exception);
       if (callable) {
         strategy.handle(context, fail.exception);
       }
