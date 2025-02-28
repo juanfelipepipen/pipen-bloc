@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:pipen_bloc/listen/bloc_listen.dart';
 import 'package:pipen_bloc/models/fail_result.dart';
 import 'package:pipen_bloc/cubit/cubit_fetch.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class BlocListenFetch<T> extends BlocListen<FetchState<T>> {
   VoidCallback? loading;

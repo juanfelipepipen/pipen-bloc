@@ -25,12 +25,31 @@ abstract class CubitFetch<R> extends Cubit<FetchState<R>> {
     if (state is! LoadingState || !init) {
       init = true;
       loading();
-      _resolver = CancelableOperation.fromFuture(resolver);
-      _resolver?.value.then((result) {
-        success(result);
-      }).catchError((e, s) {
-        fail(e, s);
-      });
+
+      resolvable() async {
+        if (this case FetchDelay fetchDelay) {
+          await Future.delayed(fetchDelay.delay);
+        }
+
+        if (this is FetchDelaySome) {
+          await Future.delayed(Duration(seconds: 3));
+        }
+
+        if (this is FetchThrow || this is FetchThrowIn) {
+          throw Exception('CubitFetch throw for test');
+        }
+
+        return await resolver;
+      }
+
+      _resolver = CancelableOperation.fromFuture(resolvable());
+      _resolver?.value
+          .then((result) {
+            success(result);
+          })
+          .catchError((e, s) {
+            fail(e, s);
+          });
     }
   }
 
@@ -46,7 +65,19 @@ abstract class CubitFetch<R> extends Cubit<FetchState<R>> {
 
   /// Emit fail state
   void fail(dynamic e, StackTrace s) {
-    emit(FetchFail<R>(FailResult(e, s)));
+    syncFail(FailResult(e, s));
+  }
+
+  /// Sync fail from exists fail result
+  void syncFail(FailResult fail) {
+    emit(FetchFail<R>(fail));
+  }
+
+  /// Handle if state is success
+  void onSuccess(Function(R) on) {
+    if (state case FetchSuccess<R> success) {
+      on.call(success.result);
+    }
   }
 
   @override
@@ -59,3 +90,13 @@ abstract class CubitFetch<R> extends Cubit<FetchState<R>> {
 abstract class CubitFetchPending<R> extends CubitFetch<R> {
   CubitFetchPending() : super(pending: true);
 }
+
+interface class FetchDelay {
+  Duration get delay => throw UnimplementedError();
+}
+
+interface class FetchDelaySome {}
+
+interface class FetchThrow {}
+
+interface class FetchThrowIn extends FetchDelay {}

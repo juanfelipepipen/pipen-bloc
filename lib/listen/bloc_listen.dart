@@ -1,7 +1,7 @@
-import 'package:pipen_bloc/abstract/models/pipen_bloc_listener_ignore_exceptions.dart';
-import 'package:pipen_bloc/abstract/models/pipen_bloc_listener_exceptions.dart';
+import 'package:pipen_bloc/abstract/bloc_listen_exceptions_ignore.dart';
+import 'package:pipen_bloc/abstract/bloc_listen_exceptions.dart';
 import 'package:pipen_bloc/abstract/fail_state.dart';
-import 'package:pipen_bloc/listen/abstract/listener_exception_strategy.dart';
+import 'package:pipen_bloc/models/exception_strategy.dart';
 import 'package:pipen_bloc/models/fail_result.dart';
 import 'package:flutter/widgets.dart';
 
@@ -31,10 +31,10 @@ abstract class BlocListen<T> {
   BuildContext get context => _listen.$1;
 
   /// Exception strategies on fail state
-  ListenerExceptionStrategiesList errorStrategies = [];
+  List<ExceptionStrategy> errorStrategies = [];
 
   /// Exception strategies on fail state
-  static ListenerExceptionStrategiesList strategies = [];
+  static List<ExceptionStrategy> strategies = [];
 
   /// [Getter] Handle local exception managers
   Function(FailResult fail)? onExceptions;
@@ -70,12 +70,14 @@ abstract class BlocListen<T> {
 
   /// Add exception strategy
   void strategy<E>(Function(E) strategy) {
-    final exceptionStrategy = ListenerExceptionStrategy<E>(strategy: strategy);
-    errorStrategies.add(exceptionStrategy);
+    // final exceptionStrategy = ListenerExceptionStrategy<E>(strategy: strategy);
+    // errorStrategies.add(exceptionStrategy);
   }
 
   /// [Event] Navigator pop
-  void pop() => Navigator.of(context).pop();
+  void pop() {
+    Navigator.of(context).pop();
+  }
 
   /// [Event] Handle on exceptions
   void fail() {
@@ -88,9 +90,9 @@ abstract class BlocListen<T> {
   void _isException(FailState state) {
     _exceptionStrategies(state.fail);
 
-    if (this case PipenBlocListenerExceptions instance) {
+    if (this case BlocListenExceptions instance) {
       instance.exception(state.fail.exception);
-    } else if (this is! PipenBlocListenerIgnoreExceptions) {
+    } else if (this is! BlocListenExceptionsIgnore) {
       _onFail(state.fail);
     }
   }
