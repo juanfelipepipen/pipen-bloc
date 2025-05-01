@@ -80,6 +80,20 @@ abstract class CubitFetch<R> extends Cubit<FetchState<R>> {
     }
   }
 
+  /// Handle if state is failed
+  void onFailed(Function on) {
+    if (state is FetchFail<R>) {
+      on.call();
+    }
+  }
+
+  /// Handle if state is loading
+  void onLoading(Function on) {
+    if (state is FetchLoading || state is FetchPending) {
+      on.call();
+    }
+  }
+
   @override
   Future<void> close() {
     _resolver?.cancel();
