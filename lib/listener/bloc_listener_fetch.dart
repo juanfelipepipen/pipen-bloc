@@ -11,8 +11,8 @@ class BlocListenerFetch<B extends StateStreamable<FetchState<S>>, S>
     super.listenWhen,
     required BlocListen<FetchState<S>> listener,
   }) : super(
-          listener: (context, state) {
-            listener.handle(listen: (context, state));
-          },
-        );
+         listener: (context, state) {
+           listener.handle(listen: (context: context, state: state));
+         },
+       );
 }

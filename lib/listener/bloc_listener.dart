@@ -30,11 +30,12 @@ class BlocListenerP<B extends StateStreamable<S>, S> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocListener<B, S>(
-        bloc: bloc,
-        listener: listener ??
-            (context, state) {
-              listen?.handle(listen: (context, state));
-            },
-        child: getChild(context),
-      );
+    bloc: bloc,
+    listener:
+        listener ??
+        (context, state) {
+          listen?.handle(listen: (context: context, state: state));
+        },
+    child: getChild(context),
+  );
 }

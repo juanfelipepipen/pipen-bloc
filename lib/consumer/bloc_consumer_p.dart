@@ -10,10 +10,10 @@ class BlocConsumerP<B extends bloc.StateStreamable<S>, S> extends StatelessWidge
 
   @override
   Widget build(BuildContext context) => bloc.BlocConsumer<B, S>(
-        listener: (context, state) => listener.handle(listen: (context, state)),
-        builder: (context, state) {
-          final bloc = context.read<B>();
-          return builder.call(context, state, bloc);
-        },
-      );
+    listener: (context, state) => listener.handle(listen: (context: context, state: state)),
+    builder: (context, state) {
+      final bloc = context.read<B>();
+      return builder.call(context, state, bloc);
+    },
+  );
 }

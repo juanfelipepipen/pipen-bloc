@@ -4,22 +4,23 @@ import 'package:pipen_bloc/models/fail_result.dart';
 import 'package:pipen_bloc/cubit/cubit_fetch.dart';
 
 abstract class BlocListenFetch<T> extends BlocListen<FetchState<T>> {
-  VoidCallback? loading;
-  Function(T result)? success;
-  Function<A>(A error)? errors;
   Function(FailResult fail)? failed;
+  Function<A>(A error)? errors;
+  Function(T result)? success;
+  VoidCallback? loading;
 
   @override
   void listen() {
+    print("LISTANDO ALV>>>>");
     if (state case FetchSuccess<T> success) {
       this.success?.call(success.result);
     }
 
-    if (state case FetchFail<T> fail) {
+    if (state case FetchFail fail) {
       this.failed?.call(fail.fail);
     }
 
-    if (state case FetchLoading<T> _) {
+    if (state is FetchLoading) {
       this.loading?.call();
     }
   }

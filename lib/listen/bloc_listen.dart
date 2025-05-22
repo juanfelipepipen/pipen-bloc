@@ -1,18 +1,18 @@
 import 'package:pipen_bloc/abstract/bloc_listen_exceptions_ignore.dart';
 import 'package:pipen_bloc/abstract/bloc_listen_exceptions.dart';
 import 'package:pipen_bloc/abstract/fail_state.dart';
+import 'package:pipen_bloc/listen/exceptions/bloc_exception_manager.dart';
 import 'package:pipen_bloc/models/exception_strategy.dart';
 import 'package:pipen_bloc/models/fail_result.dart';
 import 'package:flutter/widgets.dart';
 
-typedef Listen<T> = (BuildContext context, T state);
+typedef Listen<T> = ({BuildContext context, T state});
 
 abstract class BlocListen<T> {
   /// Execute listen actions
   void handle({required Listen<T> listen}) {
     /// Handle listen action on state change
     _listen = listen;
-    errorStrategies.addAll(strategies);
     this.listen();
 
     /// Handle exceptions manager
@@ -25,22 +25,22 @@ abstract class BlocListen<T> {
   late Listen<T> _listen;
 
   /// Current state
-  T get state => _listen.$2;
+  T get state => _listen.state;
 
   /// Parent context
-  BuildContext get context => _listen.$1;
+  BuildContext get context => _listen.context;
 
   /// Exception strategies on fail state
-  List<ExceptionStrategy> errorStrategies = [];
+  List<ListenException> errorStrategies = [];
 
   /// Exception strategies on fail state
-  static List<ExceptionStrategy> strategies = [];
+  static List<ListenException> strategies = [];
 
   /// [Getter] Handle local exception managers
   Function(FailResult fail)? onExceptions;
 
   /// [Static] Handle static exception manager
-  static Function(BuildContext context, FailResult fail)? exceptionManager;
+  static BlocExceptionManager? exceptionManager;
 
   /// On Fail getter with local instance onException or global exception manager
   void _onFail(FailResult fail) {
@@ -48,7 +48,13 @@ abstract class BlocListen<T> {
       onExceptions?.call(fail);
       return;
     }
-    exceptionManager?.call(context, fail);
+
+    exceptionManager?.decode(
+      listener: this,
+      context: context,
+      exception: fail.exception,
+      strategies: [...strategies, ...errorStrategies],
+    );
   }
 
   /// [Abstract] Listen changes on BLoC state
@@ -68,12 +74,6 @@ abstract class BlocListen<T> {
     }
   }
 
-  /// Add exception strategy
-  void strategy<E>(Function(E) strategy) {
-    // final exceptionStrategy = ListenerExceptionStrategy<E>(strategy: strategy);
-    // errorStrategies.add(exceptionStrategy);
-  }
-
   /// [Event] Navigator pop
   void pop() {
     Navigator.of(context).pop();
@@ -88,23 +88,10 @@ abstract class BlocListen<T> {
 
   /// Handle exceptions manager or use case
   void _isException(FailState state) {
-    _exceptionStrategies(state.fail);
-
     if (this case BlocListenExceptions instance) {
       instance.exception(state.fail.exception);
     } else if (this is! BlocListenExceptionsIgnore) {
       _onFail(state.fail);
-    }
-  }
-
-  /// Handle exception strategies
-  void _exceptionStrategies(FailResult fail) {
-    /// Handle user exception strategies
-    for (var strategy in errorStrategies) {
-      final callable = strategy.callable(this, fail.exception);
-      if (callable) {
-        strategy.handle(context, this, fail.exception);
-      }
     }
   }
 }
