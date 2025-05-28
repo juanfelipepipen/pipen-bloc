@@ -11,7 +11,6 @@ abstract class BlocListenFetch<T> extends BlocListen<FetchState<T>> {
 
   @override
   void listen() {
-    print("LISTANDO ALV>>>>");
     if (state case FetchSuccess<T> success) {
       this.success?.call(success.result);
     }
