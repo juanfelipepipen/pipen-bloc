@@ -44,11 +44,13 @@ abstract class BlocListen<T> {
 
   /// On Fail getter with local instance onException or global exception manager
   void _onFail(FailResult fail) {
+    // Handle custom onException callback
     if (onExceptions != null) {
       onExceptions?.call(fail);
       return;
     }
 
+    // Find exception decoder on strategies list
     exceptionManager?.decode(
       listener: this,
       context: context,

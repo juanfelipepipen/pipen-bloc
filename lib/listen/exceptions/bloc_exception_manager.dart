@@ -21,7 +21,9 @@ abstract class BlocExceptionManager {
         (strategy) => strategy.callable(listener, exception),
       );
       strategy.handle(context, listener, exception);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('INTERNAL ERROR');
+      debugPrint(e.toString());
       onUnknown.call(context);
     }
   }
