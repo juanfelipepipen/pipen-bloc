@@ -1,7 +1,7 @@
-import 'package:pipen_bloc/builder/bloc_builder_p.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pipen_bloc/listen/bloc_listen.dart';
+import 'package:pipen_bloc/src/builder/bloc_builder_p.dart';
+import 'package:pipen_bloc/src/listen/bloc_listen.dart';
 
 class BlocListenerP<B extends StateStreamable<S>, S> extends StatelessWidget {
   const BlocListenerP({

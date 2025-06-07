@@ -1,5 +1,5 @@
-import 'package:pipen_bloc/models/exception_strategy.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pipen_bloc/src/models/exception_strategy.dart';
 
 abstract class BlocExceptionManager {
   /// [Getter] Call on unknown exception
@@ -20,9 +20,10 @@ abstract class BlocExceptionManager {
       final strategy = availableStrategies.firstWhere(
         (strategy) => strategy.callable(listener, exception),
       );
+      debugPrint('Exception strategy used: ${strategy.runtimeType}');
       strategy.handle(context, listener, exception);
     } catch (e) {
-      debugPrint('INTERNAL ERROR');
+      debugPrint('PipenBloc internal exception');
       debugPrint(e.toString());
       onUnknown.call(context);
     }

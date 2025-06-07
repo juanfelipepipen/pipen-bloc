@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pipen_bloc/listen/bloc_listen.dart';
+import 'package:pipen_bloc/src/listen/bloc_listen.dart';
 
 class BlocListenable<B extends StateStreamable<S>, S> extends BlocListenerBase<B, S> {
   BlocListenable({

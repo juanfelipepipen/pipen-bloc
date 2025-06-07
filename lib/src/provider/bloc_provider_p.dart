@@ -1,5 +1,5 @@
-import 'package:pipen_bloc/builder/bloc_builder_p.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pipen_bloc/src/builder/bloc_builder_p.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,12 +13,8 @@ class BlocProviderP<B extends StateStreamableSource<S>, S> extends StatelessWidg
 
   @override
   Widget build(BuildContext context) => BlocProvider<B>(
-        lazy: false,
-        create: create,
-        child: BlocBuilderP<B, S>(
-          init: init,
-          builder: builder,
-          child: child,
-        ),
-      );
+    lazy: false,
+    create: create,
+    child: BlocBuilderP<B, S>(init: init, builder: builder, child: child),
+  );
 }

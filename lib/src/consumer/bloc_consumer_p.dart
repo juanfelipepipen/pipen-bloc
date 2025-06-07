@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart' as bloc;
 import 'package:flutter/widgets.dart';
-import 'package:pipen_bloc/listen/bloc_listen.dart';
+import 'package:pipen_bloc/src/listen/bloc_listen.dart';
 
 class BlocConsumerP<B extends bloc.StateStreamable<S>, S> extends StatelessWidget {
   const BlocConsumerP({required this.builder, required this.listener, super.key});

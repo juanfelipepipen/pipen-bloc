@@ -1,10 +1,10 @@
-import 'package:pipen_bloc/abstract/bloc_listen_exceptions_ignore.dart';
-import 'package:pipen_bloc/abstract/bloc_listen_exceptions.dart';
-import 'package:pipen_bloc/abstract/fail_state.dart';
-import 'package:pipen_bloc/listen/exceptions/bloc_exception_manager.dart';
-import 'package:pipen_bloc/models/exception_strategy.dart';
-import 'package:pipen_bloc/models/fail_result.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pipen_bloc/src/abstract/bloc_listen_exceptions.dart';
+import 'package:pipen_bloc/src/abstract/bloc_listen_exceptions_ignore.dart';
+import 'package:pipen_bloc/src/abstract/fail_state.dart';
+import 'package:pipen_bloc/src/listen/exceptions/bloc_exception_manager.dart';
+import 'package:pipen_bloc/src/models/exception_strategy.dart';
+import 'package:pipen_bloc/src/models/fail_result.dart';
 
 typedef Listen<T> = ({BuildContext context, T state});
 

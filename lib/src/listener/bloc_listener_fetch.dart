@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pipen_bloc/cubit/cubit_fetch.dart';
-import 'package:pipen_bloc/listen/bloc_listen.dart';
+import 'package:pipen_bloc/src/cubit/cubit_fetch.dart';
+import 'package:pipen_bloc/src/listen/bloc_listen.dart';
 
 class BlocListenerFetch<B extends StateStreamable<FetchState<S>>, S>
     extends BlocListenerBase<B, FetchState<S>> {

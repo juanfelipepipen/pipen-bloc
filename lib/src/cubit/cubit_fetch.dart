@@ -1,9 +1,9 @@
 import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:pipen_bloc/abstract/fail_state.dart';
-import 'package:pipen_bloc/abstract/loading_state.dart';
-import 'package:pipen_bloc/models/fail_result.dart';
+import 'package:pipen_bloc/src/abstract/fail_state.dart';
+import 'package:pipen_bloc/src/abstract/loading_state.dart';
+import 'package:pipen_bloc/src/models/fail_result.dart';
 
 part 'fetch_state.dart';
 part 'cubit_fetch_resolver.dart';
