@@ -10,7 +10,11 @@ part 'cubit_fetch_resolver.dart';
 part 'cubit_fetch_resolver_pending.dart';
 
 abstract class CubitFetch<R> extends Cubit<FetchState<R>> {
-  CubitFetch({bool pending = false}) : super(pending ? FetchPending<R>() : FetchLoading<R>());
+  CubitFetch({bool pending = false}) : super(pending ? FetchPending<R>() : FetchLoading<R>()) {
+    if (!pending) {
+      fetch();
+    }
+  }
 
   bool init = false;
 

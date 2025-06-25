@@ -10,11 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   meta: any
   provider: any
   bloc: ^9.0.0
   flutter_bloc: ^9.0.0
   async: ^2.12.0
+  pipen_echo: ^1.0.1
 
 dev_dependencies:
   flutter_test:

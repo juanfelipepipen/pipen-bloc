@@ -1,0 +1,3 @@
+dependency_overrides:
+  pipen_echo:
+    path: ../pipen_echo
