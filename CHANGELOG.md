@@ -1,3 +1,7 @@
+## 1.2.4
+
+* Minimal changes
+
 ## 1.2.3
 
 * Imports pipen_bloc fixed

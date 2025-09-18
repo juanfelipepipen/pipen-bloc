@@ -28,6 +28,7 @@ export 'src/listener/bloc_listen_on.dart';
 export 'src/listener/bloc_listenable.dart';
 export 'src/listener/bloc_listener.dart';
 export 'src/listener/bloc_listener_fetch.dart';
+export 'src/listener/bloc_listener_fetch_success.dart';
 
 export 'src/models/builder_model.dart';
 export 'src/models/exception_strategy.dart';
