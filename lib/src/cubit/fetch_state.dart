@@ -3,7 +3,10 @@ part of 'cubit_fetch.dart';
 typedef FetchBlocStreamable<S> = StateStreamable<FetchState<S>>;
 
 @immutable
-sealed class FetchState<R> {}
+sealed class FetchState<R> extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
 final class FetchLoading<R> extends FetchState<R> implements LoadingState {}
 
@@ -15,6 +18,9 @@ final class FetchSuccess<R> extends FetchState<R> {
   final R result;
 
   FetchSuccess<R> copy(R result) => FetchSuccess<R>(result);
+
+  @override
+  List<Object?> get props => [result];
 }
 
 final class FetchFail<R> extends FetchState<R> implements FailState {
@@ -22,4 +28,7 @@ final class FetchFail<R> extends FetchState<R> implements FailState {
 
   @override
   final FailResult fail;
+
+  @override
+  List<Object?> get props => [fail];
 }

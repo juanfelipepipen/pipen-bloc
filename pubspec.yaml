@@ -1,5 +1,5 @@
 name: pipen_bloc
-version: 1.2.4
+version: 1.2.5
 description: "BLoC powerful tools"
 homepage: "https://github.com/juanfelipepipen/pipen-bloc"
 
@@ -16,6 +16,7 @@ dependencies:
   bloc: ^9.0.0
   flutter_bloc: ^9.0.0
   async: ^2.12.0
+  equatable: ^2.0.7
 
 dev_dependencies:
   flutter_test:
