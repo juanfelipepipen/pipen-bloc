@@ -1,3 +1,11 @@
+## 1.2.6
+
+* Support for ignore exception on minimal listener
+
+## 1.2.5
+
+* Minimal changes
+
 ## 1.2.4
 
 * Minimal changes

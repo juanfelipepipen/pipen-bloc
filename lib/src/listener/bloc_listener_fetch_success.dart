@@ -7,6 +7,7 @@ class BlocListenerFetchSuccess<B extends StateStreamable<FetchState<S>>, S>
   factory BlocListenerFetchSuccess.pop({
     Key? key,
     Widget? child,
+    bool? ignoreExceptions,
     VoidCallback? callback,
     Function(S value)? onSuccess,
   }) {
@@ -15,6 +16,7 @@ class BlocListenerFetchSuccess<B extends StateStreamable<FetchState<S>>, S>
       callback: callback,
       popOnSuccess: true,
       onSuccess: onSuccess,
+      ignoreExceptions: ignoreExceptions,
       child: child,
     );
   }
@@ -22,6 +24,7 @@ class BlocListenerFetchSuccess<B extends StateStreamable<FetchState<S>>, S>
   factory BlocListenerFetchSuccess({
     Key? key,
     Widget? child,
+    bool? ignoreExceptions,
     VoidCallback? callback,
     Function(S value)? onSuccess,
   }) {
@@ -30,6 +33,7 @@ class BlocListenerFetchSuccess<B extends StateStreamable<FetchState<S>>, S>
       callback: callback,
       popOnSuccess: false,
       onSuccess: onSuccess,
+      ignoreExceptions: ignoreExceptions,
       child: child,
     );
   }
@@ -38,6 +42,7 @@ class BlocListenerFetchSuccess<B extends StateStreamable<FetchState<S>>, S>
     super.key,
     super.child,
     VoidCallback? callback,
+    bool? ignoreExceptions,
     required bool popOnSuccess,
     Function(S value)? onSuccess,
   }) : super(
@@ -46,17 +51,24 @@ class BlocListenerFetchSuccess<B extends StateStreamable<FetchState<S>>, S>
              callback: callback,
              onSuccess: onSuccess,
              popOnSuccess: popOnSuccess,
+             ignoreExceptions: ignoreExceptions,
            ).handle(listen: (context: context, state: state));
          },
        );
 }
 
-class _Listener<S> extends BlocListenFetch<S> {
-  _Listener({this.callback, this.onSuccess, required this.popOnSuccess});
+class _Listener<S> extends BlocListenFetch<S>
+    implements BlocListenExceptionsIgnoreCondition {
+  _Listener({
+    this.callback,
+    this.onSuccess,
+    required this.popOnSuccess,
+    bool? ignoreExceptions,
+  }) : _ignoreExceptions = ignoreExceptions ?? false;
 
+  final bool popOnSuccess, _ignoreExceptions;
   final Function(S value)? onSuccess;
   final VoidCallback? callback;
-  final bool popOnSuccess;
 
   @override
   get success => (result) {
@@ -67,4 +79,7 @@ class _Listener<S> extends BlocListenFetch<S> {
     callback?.call();
     onSuccess?.call(result);
   };
+
+  @override
+  bool get ignore => _ignoreExceptions;
 }

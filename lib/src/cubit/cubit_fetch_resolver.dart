@@ -1,91 +1,28 @@
 part of 'cubit_fetch.dart';
 
-abstract class CubitFetchResolver<R> extends Cubit<FetchState<R>> {
-  CubitFetchResolver({bool pending = false})
-    : super(pending ? FetchPending<R>() : FetchLoading<R>());
+/// Fetch cubit that receives the future when [fetch] is called.
+///
+/// This variant is useful when the same cubit can execute different requests
+/// or when the request depends on arguments known only at call time. It shares
+/// the complete execution engine with [CubitFetch].
+abstract class CubitFetchResolver<R> extends _CubitFetchBase<R> {
+  CubitFetchResolver({super.pending = false});
 
-  bool init = false;
-
-  CancelableOperation<R>? _resolver;
-
-  /// Fetch resolver
+  /// Starts [resolver]. Calls made while another fetch is loading are ignored.
+  ///
+  /// A future starts before it is passed to this method. For lazy execution,
+  /// especially when using [FetchDelay], prefer [fetchTask].
   @protected
-  void fetch(Future<R> resolver) {
-    if (state is! LoadingState || !init) {
-      init = true;
-      emit(FetchLoading<R>());
+  void fetch(Future<R> resolver) =>
+      _runFetch(() => resolver, onCancel: cancelResolver);
 
-      resolvable() async {
-        if (this case FetchDelay fetchDelay) {
-          await Future.delayed(fetchDelay.delay);
-        }
-
-        if (this is FetchDelaySome) {
-          await Future.delayed(Duration(seconds: 3));
-        }
-
-        if (this is FetchThrow || this is FetchThrowIn) {
-          throw Exception('CubitFetch throw for test');
-        }
-
-        return await resolver;
-      }
-
-      _resolver = CancelableOperation.fromFuture(resolvable());
-      _resolver?.value
-          .then((result) {
-            emit(FetchSuccess<R>(result));
-          })
-          .catchError((e, s) {
-            emit(FetchFail<R>(FailResult(e, s)));
-          });
-    }
-  }
-
-  /// Emit loading state
-  void loading() {
-    emit(FetchLoading<R>());
-  }
-
-  /// Emit success state
-  void success(R result) {
-    emit(FetchSuccess<R>(result));
-  }
-
-  /// Emit fail state
-  void fail(dynamic e, StackTrace s) {
-    syncFail(FailResult(e, s));
-  }
-
-  /// Sync fail from exists fail result
-  void syncFail(FailResult fail) {
-    emit(FetchFail<R>(fail));
-  }
-
-  /// Handle if state is success
-  void onSuccess(Function(R) on) {
-    if (state case FetchSuccess<R> success) {
-      on.call(success.result);
-    }
-  }
-
-  /// Handle if state is failed
-  void onFailed(Function on) {
-    if (state is FetchFail<R>) {
-      on.call();
-    }
-  }
-
-  /// Handle if state is loading
-  void onLoading(Function on) {
-    if (state is FetchLoading || state is FetchPending) {
-      on.call();
-    }
-  }
-
-  @override
-  Future<void> close() {
-    _resolver?.cancel();
-    return super.close();
-  }
+  /// Starts a lazily-created resolver with an optional per-request cancel hook.
+  ///
+  /// This is the preferred API for cancelable requests because the factory is
+  /// not invoked if the cubit closes during a configured delay.
+  @protected
+  void fetchTask(
+    Future<R> Function() resolver, {
+    FutureOr<void> Function()? onCancel,
+  }) => _runFetch(resolver, onCancel: onCancel ?? cancelResolver);
 }

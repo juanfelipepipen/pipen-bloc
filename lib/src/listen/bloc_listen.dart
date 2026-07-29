@@ -92,8 +92,20 @@ abstract class BlocListen<T> {
   void _isException(FailState state) {
     if (this case BlocListenExceptions instance) {
       instance.exception(state.fail.exception);
-    } else if (this is! BlocListenExceptionsIgnore) {
-      _onFail(state.fail);
+      return;
     }
+
+    if (this is BlocListenExceptionsIgnore) {
+      return;
+    }
+
+    if (this case BlocListenExceptionsIgnoreCondition blocListen) {
+      if (!blocListen.ignore) {
+        _onFail(state.fail);
+      }
+      return;
+    }
+
+    _onFail(state.fail);
   }
 }
